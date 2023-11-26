@@ -28,6 +28,27 @@ operator *=(container&& left,
   return left = left * right;
 }
 
+template<typename container>
+auto
+power(container&& cr,
+      int pr) {
+
+  std::remove_reference_t<container>
+    a{cr},
+    r{cr};
+
+  while(pr) {
+    if (pr & 1) {
+      r *= a;
+    }
+
+    a *= a;
+    pr >>= 1;
+  }
+
+  return r;
+}
+
 template<typename container, typename stream_out>
 stream_out&
 operator <<(stream_out& out,
@@ -52,11 +73,7 @@ main(void) {
   std::array<std::array<std::uint32_t, 2u>, 2u> base {
     0u, 1u,
     1u, 1u
-  }, state = base;
+  };
 
-  for (int n{}; n < number-1; ++n) {
-    state *= base;
-  }
-
-  std::cout << state;
+  std::cout << power(base, number-1);
 }
