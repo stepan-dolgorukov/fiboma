@@ -20,6 +20,14 @@ operator *(container&& left,
   return result;
 }
 
+template<typename container>
+auto
+operator *=(container&& left,
+            container&& right) {
+
+  return left = left * right;
+}
+
 template<typename container, typename stream_out>
 stream_out&
 operator <<(stream_out& out,
@@ -47,7 +55,7 @@ main(void) {
   }, state = base;
 
   for (int n{}; n < number-1; ++n) {
-    state = state * base;
+    state *= base;
   }
 
   std::cout << state;
